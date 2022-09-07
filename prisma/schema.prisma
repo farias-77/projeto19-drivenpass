@@ -25,6 +25,8 @@ model credentials {
   title    String
   userId   Int
   users    users  @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
 }
 
 model safeNotes {
@@ -33,6 +35,8 @@ model safeNotes {
   note   String
   userId Int
   users  users  @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
 }
 
 model wifiNetworks {
@@ -56,6 +60,8 @@ model cards {
   type           cardTypes
   userId         Int
   users          users     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
 }
 
 enum cardTypes {
