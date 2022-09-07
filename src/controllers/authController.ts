@@ -15,3 +15,12 @@ export async function postSignUp(req: Request, res: Response){
 
     return res.status(201).send("Usuário criado com sucesso.");
 }
+
+export async function postSignIn(req: Request, res: Response) {
+    const loginData: TUser = req.body;
+
+    await authServices.validateLogin(loginData);
+    const token = await authServices.generateToken(loginData.email);
+
+    return res.status(200).send({token});
+}

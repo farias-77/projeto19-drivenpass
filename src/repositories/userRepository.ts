@@ -2,11 +2,13 @@ import prisma from "../database/databaseConnection";
 import { TUser } from "../types/userTypes";
 
 export async function findByEmail(email: string){
-    return await prisma.users.findMany({
+    const user = await prisma.users.findMany({
         where: {
             email
         }
     });
+
+    return user[0];
 }
 
 export async function insertUser(user: TUser) {
