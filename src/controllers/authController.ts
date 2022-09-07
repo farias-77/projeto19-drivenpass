@@ -1,8 +1,8 @@
-import * as authServices from "../services/authServices";
-import { TUser } from "../types/userTypes";
-
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+
+import * as authServices from "../services/authServices";
+import { TUser } from "../types/userTypes";
 
 export async function postSignUp(req: Request, res: Response){
     const signUpData: TUser = req.body;
@@ -13,5 +13,5 @@ export async function postSignUp(req: Request, res: Response){
     await authServices.validateEmailInUse(signUpData.email);
     await authServices.insertUser(user);
 
-    return res.status(200).send("Usuário criado com sucesso.");
+    return res.status(201).send("Usuário criado com sucesso.");
 }
