@@ -4,7 +4,7 @@ import { TUser } from "../types/userTypes";
 export async function validateEmailInUse(email: string){
     const user = await findUserByEmail(email);
 
-    if(user){
+    if(user.length !== 0){
         throw {code: "conflict", message: "E-mail já cadastrado!"};
     }
 
