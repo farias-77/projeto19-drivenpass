@@ -19,6 +19,12 @@ export async function insertCredential(credential: TCredential, userId: number){
     return await credentialRepositories.insertCredentialRepository({...credential, password: encryptedPassword}, userId);
 }
 
+export async function getAllCredentialsByUserId(userId: number){
+    const credentials = await credentialRepositories.getAllCredentialsByUserId(userId);
+
+    return credentials;
+}
+
 async function findByTitleAndUserId(title: string, userId: number){
     return await credentialRepositories.findCredentialByTitleAndUserId(title, userId);
 }

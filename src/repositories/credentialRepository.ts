@@ -22,3 +22,11 @@ export async function insertCredentialRepository(credentialWithoutUserId: TCrede
         data: credential
     })
 }
+
+export async function getAllCredentialsByUserId(userId: number){
+    return await prisma.credentials.findMany({
+        where:{
+            userId
+        }
+    });
+}
