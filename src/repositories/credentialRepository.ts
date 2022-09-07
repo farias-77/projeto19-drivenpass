@@ -5,7 +5,7 @@ export async function findCredentialByTitleAndUserId(title: string, userId: numb
     const credential = await prisma.credentials.findMany({
         where:{
             title,
-            id: userId
+            userId
         }
     });
 

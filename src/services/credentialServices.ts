@@ -3,9 +3,10 @@ import { TCredential } from "../types/credentialTypes";
 import Cryptr from "cryptr";
 
 export async function validateCredentialTitleForUser(title: string, userId: number){
-    const credential = await findByTitle(title, userId);
+    const credential = await findByTitleAndUserId(title, userId);
 
     if(credential){
+
         throw {code: "unauthorized", message: "Você já possui uma credencial com esse nome!"}
     }
     
@@ -18,7 +19,7 @@ export async function insertCredential(credential: TCredential, userId: number){
     return await credentialRepositories.insertCredentialRepository({...credential, password: encryptedPassword}, userId);
 }
 
-async function findByTitle(title: string, userId: number){
+async function findByTitleAndUserId(title: string, userId: number){
     return await credentialRepositories.findCredentialByTitleAndUserId(title, userId);
 }
 
