@@ -21,9 +21,24 @@ export async function insertCredential(credential: TCredential, userId: number){
 }
 
 export async function getAllCredentialsByUserId(userId: number){
-    let credentials = await credentialRepositories.getAllCredentialsByUserId(userId);
-    credentials = credentials.map(decryptsPassword)
+    let credentials: credentials[] = await credentialRepositories.getAllCredentialsByUserId(userId);
+    if(credentials.length > 0) credentials = credentials.map(decryptsPassword);
     return credentials;
+}
+
+export async function getCredentialById(credentialId: number, userId: number){
+    let credential: credentials = await credentialRepositories.getCredentialById(credentialId);
+
+    if(!credential){
+        throw {code: "not found", message: "Não existe uma credencial com esse id."};
+    }
+
+    if(credential.userId !== userId){
+        throw {code: "unauthorized", message: "Você não tem permissão para visualizar essa credencial!"};
+    }
+
+    credential = decryptsPassword(credential)
+    return credential;
 }
 
 async function findByTitleAndUserId(title: string, userId: number){

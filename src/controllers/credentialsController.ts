@@ -18,3 +18,11 @@ export async function getAllCredentialsByUserId(req: Request, res: Response){
     const userCredentials = await credentialServices.getAllCredentialsByUserId(id);
     return res.status(200).send(userCredentials);
 }
+
+export async function getCredentialById(req: Request, res: Response){
+    const id: number = Number(res.locals.retornoJwtVerify.id);
+    const credentialId: number = Number(req.params.credentialId);
+
+    const credential = await credentialServices.getCredentialById(credentialId, id);
+    return res.status(200).send(credential);
+}

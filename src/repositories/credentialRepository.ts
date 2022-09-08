@@ -1,5 +1,6 @@
 import { TCredential } from "../types/credentialTypes";
 import prisma from "../database/databaseConnection";
+import { credentials } from "@prisma/client";
 
 export async function findCredentialByTitleAndUserId(title: string, userId: number){    
     const credential = await prisma.credentials.findMany({
@@ -29,4 +30,14 @@ export async function getAllCredentialsByUserId(userId: number){
             userId
         }
     });
+}
+
+export async function getCredentialById(id: number){
+    const credential: credentials[] = await prisma.credentials.findMany({
+        where:{
+            id
+        }
+    });
+
+    return credential[0] || null;
 }
