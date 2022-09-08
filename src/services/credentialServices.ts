@@ -1,6 +1,7 @@
 import * as credentialRepositories from "../repositories/credentialRepository";
 import { TCredential } from "../types/credentialTypes";
 import Cryptr from "cryptr";
+import { credentials } from "@prisma/client";
 
 export async function validateCredentialTitleForUser(title: string, userId: number){
     const credential = await findByTitleAndUserId(title, userId);
@@ -20,8 +21,8 @@ export async function insertCredential(credential: TCredential, userId: number){
 }
 
 export async function getAllCredentialsByUserId(userId: number){
-    const credentials = await credentialRepositories.getAllCredentialsByUserId(userId);
-
+    let credentials = await credentialRepositories.getAllCredentialsByUserId(userId);
+    credentials = credentials.map(decryptsPassword)
     return credentials;
 }
 
@@ -32,4 +33,11 @@ async function findByTitleAndUserId(title: string, userId: number){
 function encryptsPassword(password: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(password);
+}
+
+function decryptsPassword(credential: credentials){
+    const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
+    const decryptedPassword = cryptr.decrypt(credential.password);
+
+    return {...credential, password: decryptedPassword};
 }
