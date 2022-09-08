@@ -26,19 +26,31 @@ export async function getAllCredentialsByUserId(userId: number){
     return credentials;
 }
 
-export async function getCredentialById(credentialId: number, userId: number){
-    let credential: credentials = await credentialRepositories.getCredentialById(credentialId);
+export async function getCredentialById(credentialId: number){
+    const credential: credentials = await credentialRepositories.getCredentialById(credentialId);
 
-    if(!credential){
-        throw {code: "not found", message: "Não existe uma credencial com esse id."};
-    }
-
-    if(credential.userId !== userId){
-        throw {code: "unauthorized", message: "Você não tem permissão para visualizar essa credencial!"};
-    }
-
-    credential = decryptsPassword(credential)
+    validateCredentialExists(credential);
+    
     return credential;
+}
+
+export function validateCredentialUserRelation(credential: credentials, userId: number){   
+    if(credential.userId !== userId){
+        throw {code: "unauthorized", message: "Você não tem a permissão necessária para essa credencial!"};
+    }
+
+    return;
+}
+
+export function decryptsPassword(credential: credentials){
+    const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
+    const decryptedPassword = cryptr.decrypt(credential.password);
+
+    return {...credential, password: decryptedPassword};
+}
+
+export async function deleteCredentialById(credentialId: number){
+    return await credentialRepositories.deleteCredentialById(credentialId);
 }
 
 async function findByTitleAndUserId(title: string, userId: number){
@@ -50,9 +62,11 @@ function encryptsPassword(password: string){
     return cryptr.encrypt(password);
 }
 
-function decryptsPassword(credential: credentials){
-    const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
-    const decryptedPassword = cryptr.decrypt(credential.password);
+function validateCredentialExists(credential: credentials){
+    if(!credential){
+        throw {code: "not found", message: "Não existe uma credencial com esse id."};
+    }
 
-    return {...credential, password: decryptedPassword};
+    return;
 }
+
