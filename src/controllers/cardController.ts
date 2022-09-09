@@ -28,3 +28,13 @@ export async function getCardById(req: Request, res: Response){
     const card = await cardServices.getCardById(cardId, userId);
     return res.status(200).send(card);
 }
+
+export async function deleteCardById(req: Request, res: Response){
+    const userId: number = Number(res.locals.retornoJwtVerify.id);
+    const cardId: number = Number(req.params.cardId);
+
+    await cardServices.getCardById(cardId, userId);
+    await cardServices.deleteCardById(cardId);
+
+    return res.status(200).send("Cartão deletado com sucesso.");
+}

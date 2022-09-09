@@ -45,6 +45,10 @@ export async function getCardById(cardId: number, userId: number){
     return decryptedCard;
 }
 
+export async function deleteCardById(cardId: number){
+    return await cardRepositories.deleteCardById(cardId);
+}
+
 function encrypts(data: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(data);
