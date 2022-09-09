@@ -3,19 +3,23 @@ import { TsafeNote } from "../types/safeNoteTypes";
 import { safeNotes } from "@prisma/client";
 
 export async function findSafeNoteById(safeNoteId: number){
-    return await prisma.safeNotes.findUnique({
+    const safeNote: safeNotes[] = await prisma.safeNotes.findMany({
         where:{
             id: safeNoteId
         }
-    })
+    });
+
+    return safeNote[0] || null;
 }
 
 export async function findAllSafeNotesByUserId(userId: number){
-    return await prisma.safeNotes.findMany({
+    const safeNotes: safeNotes[] = await prisma.safeNotes.findMany({
         where:{
             userId
         }
-    })
+    });
+
+    return safeNotes;
 }
 
 export async function insertSafeNote(userId: number, safeNote: TsafeNote){
@@ -32,7 +36,7 @@ export async function deleteSafeNoteById(safeNoteId: number){
         where:{
             id: safeNoteId
         }
-    })
+    });
 }
 
 export async function findSafeNoteByTitleAndUserId(title: string, userId: number){
@@ -43,5 +47,5 @@ export async function findSafeNoteByTitleAndUserId(title: string, userId: number
         }
     });
 
-    return safeNote[0];
+    return safeNote[0] || null;;
 }
