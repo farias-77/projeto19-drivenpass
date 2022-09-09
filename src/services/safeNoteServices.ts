@@ -40,6 +40,10 @@ export async function getSafeNoteById(safeNoteId: number, userId: number){
     return decryptedSafeNote;
 }
 
+export async function deleteSafeNoteById(safeNoteId: number){
+    return await safeNoteRepositories.deleteSafeNoteById(safeNoteId);
+}
+
 function encryptsNote(note: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(note);
