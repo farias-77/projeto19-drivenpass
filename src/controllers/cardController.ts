@@ -18,5 +18,5 @@ export async function getAllCardsByUserId(req: Request, res: Response){
 
     const cards: cards[] = await cardServices.getAllCardsByUserId(userId);
     
-    return res.send()
+    return res.status(200).send(cards);
 }
