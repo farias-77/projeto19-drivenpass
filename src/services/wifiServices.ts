@@ -32,6 +32,10 @@ export async function getWifiById(wifiId: number, userId: number){
     return {...wifi, password: decryptsPassword(wifi.password)};
 }
 
+export async function deleteWifiById(wifiId: number){
+    return await wifiRepositories.deleteWifiById(wifiId);
+}
+
 function encryptsPassword(password: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(password);
