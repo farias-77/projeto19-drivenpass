@@ -30,6 +30,21 @@ export async function getAllCardsByUserId(userId: number){
     return decryptedCards;
 }
 
+export async function getCardById(cardId: number, userId: number){
+    const card: cards = await cardRepositories.findCardById(cardId);
+
+    if(!card){
+        throw{code: "not found", message: "Não encontramos um cartão com o id informado."};
+    }
+
+    if(card.userId !== userId){
+        throw{code: "unauthorized", message: "Você não tem permissão para esse cartão!"};
+    }
+
+    const decryptedCard: cards = {...card, securityCode: decrypts(card.securityCode), password: decrypts(card.password)};
+    return decryptedCard;
+}
+
 function encrypts(data: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(data);

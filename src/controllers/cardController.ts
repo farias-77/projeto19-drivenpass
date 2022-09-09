@@ -20,3 +20,11 @@ export async function getAllCardsByUserId(req: Request, res: Response){
     
     return res.status(200).send(cards);
 }
+
+export async function getCardById(req: Request, res: Response){
+    const userId: number = Number(res.locals.retornoJwtVerify.id);
+    const cardId: number = Number(req.params.cardId);
+
+    const card = await cardServices.getCardById(cardId, userId);
+    return res.status(200).send(card);
+}
