@@ -18,6 +18,20 @@ export async function getAllWifisByUserId(userId: number){
     return decryptedPasswordWifis;
 }
 
+export async function getWifiById(wifiId: number, userId: number){
+    const wifi: wifiNetworks = await wifiRepositories.findWifiById(wifiId);
+
+    if(!wifi){
+        throw{code: "not found", message: "Não existe um WiFi com o id informado."};
+    }
+
+    if(wifi.userId !== userId){
+        throw{code: "unauthorized", message: "Você não tem permissão para esse WiFi!"};
+    }
+
+    return {...wifi, password: decryptsPassword(wifi.password)};
+}
+
 function encryptsPassword(password: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(password);

@@ -19,3 +19,12 @@ export async function getAllWifisByUserId(req: Request, res: Response){
 
     return res.status(200).send(wifis);
 }
+
+export async function getWifiById(req: Request, res: Response){
+    const userId: number = Number(res.locals.retornoJwtVerify.id);
+    const wifiId: number = Number(req.params.wifiId);
+
+    const wifi = await wifiServices.getWifiById(wifiId, userId);
+
+    return res.status(200).send(wifi);
+}
