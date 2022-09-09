@@ -1,7 +1,7 @@
+import { getAllSafeNotes, insertSafeNote } from "../controllers/safeNotesController"; 
 import { schemaValidation } from "../middlewares/schemaValidationMiddleware";
 import tokenMiddleware from "../middlewares/tokenValidationMiddleware";
 import { safeNotesCreationSchema } from "../schemas/safeNotesSchema";
-import { getAllSafeNotes, insertSafeNote } from "../controllers/safeNotesController"; 
 
 import { Router } from "express";
 const router = Router();
