@@ -16,12 +16,17 @@ export async function validateSafeNoteTitleForUser(safeNote: TsafeNote, userId: 
 export async function insertSafeNote(safeNote: TsafeNote, userId: number){
     const encryptedNote: string = encryptsNote(safeNote.note);
     const encryptedSafeNote = {...safeNote, note: encryptedNote};
-    
+
     return await safeNoteRepositories.insertSafeNote(userId, encryptedSafeNote);
 }
 
 export async function getAllSafeNotes(userId: number){
-    return await safeNoteRepositories.findAllSafeNotesByUserId(userId);
+    const safeNotes: safeNotes[] = await safeNoteRepositories.findAllSafeNotesByUserId(userId);
+    const decryptedSafeNotes: safeNotes[] = safeNotes.map(safeNote => {
+        return {...safeNote, note: decryptsNote(safeNote.note)};
+    });
+
+    return decryptedSafeNotes;
 }
 
 export async function getSafeNoteById(safeNoteId: number, userId: number){
@@ -29,13 +34,20 @@ export async function getSafeNoteById(safeNoteId: number, userId: number){
     
     validateSafeNoteExists(safeNote);
     validateSafeNoteBelongsToUser(safeNote, userId);
+    
+    const decryptedSafeNote: safeNotes = {...safeNote, note: decryptsNote(safeNote.note)};
 
-    return safeNote;
+    return decryptedSafeNote;
 }
 
 function encryptsNote(note: string){
     const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
     return cryptr.encrypt(note);
+}
+
+function decryptsNote(note: string){
+    const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "");
+    return cryptr.decrypt(note);
 }
 
 function validateSafeNoteExists(safeNote: safeNotes | null){
