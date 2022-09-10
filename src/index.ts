@@ -7,14 +7,12 @@ import errorHandler from "./middlewares/errorHandlingMiddleware";
 import router from "./routers/indexRouter";
 
 const server = express();
-server.use(cors());
-server.use(json());
 dotenv.config();
 
+server.use(cors());
+server.use(json());
 server.use(router);
 server.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
-server.listen(PORT, () => {
-    console.log("Server running on port " + PORT);
-})
+server.listen(PORT);
