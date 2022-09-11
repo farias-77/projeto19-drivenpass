@@ -1,7 +1,7 @@
 import * as safeNoteRepositories from "../repositories/safeNoteRepository";
-import Cryptr from "cryptr";
 import { TsafeNote } from "../types/safeNoteTypes";
 import { safeNotes } from "@prisma/client";
+import Cryptr from "cryptr";
 
 export async function validateSafeNoteTitleForUser(safeNote: TsafeNote, userId: number){
     const safeNoteByTitleAndUserId: safeNotes = await safeNoteRepositories.findSafeNoteByTitleAndUserId(safeNote.title, userId);

@@ -1,7 +1,7 @@
 import * as wifiServices from "../services/wifiServices";
+import { wifiNetworks } from "@prisma/client";
 import { Request, Response } from "express";
 import { TWifi } from "../types/wifiTypes";
-import { wifiNetworks } from "@prisma/client";
 
 export async function insertWifi(req: Request, res: Response){
     const userId: number = Number(res.locals.retornoJwtVerify.id);

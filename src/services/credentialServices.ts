@@ -1,7 +1,7 @@
 import * as credentialRepositories from "../repositories/credentialRepository";
 import { TCredential } from "../types/credentialTypes";
-import Cryptr from "cryptr";
 import { credentials } from "@prisma/client";
+import Cryptr from "cryptr";
 
 export async function validateCredentialTitleForUser(title: string, userId: number){
     const credential = await findByTitleAndUserId(title, userId);

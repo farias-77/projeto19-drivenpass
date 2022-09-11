@@ -1,7 +1,7 @@
 import * as cardRepositories from "../repositories/cardRepository";
 import { TCard } from "../types/cardTypes";
-import Cryptr from "cryptr";
 import { cards } from "@prisma/client";
+import Cryptr from "cryptr";
 
 export async function insertCard(card: TCard, userId: number){
     const encryptedSecurityCode: string = encrypts(card.securityCode);

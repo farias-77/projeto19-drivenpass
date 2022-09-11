@@ -1,6 +1,6 @@
+import { createCredential, getAllCredentialsByUserId, getCredentialById, deleteCredentialById } from "../controllers/credentialsController";
 import { schemaValidation } from "../middlewares/schemaValidationMiddleware";
 import { credentialsCreationSchema } from "../schemas/credentialsSchema";
-import { createCredential, getAllCredentialsByUserId, getCredentialById, deleteCredentialById } from "../controllers/credentialsController";
 import tokenMiddleware from "../middlewares/tokenValidationMiddleware";
 
 import { Router } from "express";

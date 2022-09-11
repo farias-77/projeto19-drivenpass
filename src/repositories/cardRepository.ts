@@ -1,6 +1,6 @@
-import { cards } from "@prisma/client";
 import prisma from "../database/databaseConnection";
 import { TCard } from "../types/cardTypes";
+import { cards } from "@prisma/client";
 
 export async function findCardById(cardId: number){
     const card: cards[] = await prisma.cards.findMany({
